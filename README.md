@@ -1,5 +1,5 @@
 # AudioPlus
-AudioPlus Allows you to read a file (Download Sapiva to make it work [https://pypi.org/project/sapiva/])
+AudioPlus Allows you to read a file (Download Sapiva, and PyQt5 to make it work: [https://pypi.org/project/sapiva/], [https://pypi.org/project/PyQt5/])
 # Installation
 1. Download The Files (Click The V Code Button)
 2. Extract The Files
