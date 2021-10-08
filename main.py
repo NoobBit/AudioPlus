@@ -1,40 +1,67 @@
-import os
-from tkinter import *
-from tkinter import filedialog
-from tkinter.filedialog import askopenfilename
+from PyPDF2.generic import readHexStringFromStream
+from PyQt5.QtWidgets import *
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5 import uic
+import PyPDF2
 import sapiva
+import os, sys
 
-root = Tk()
-root.title('AudioPlus')
-root.geometry('290x125')
+path = ""
+content = ""
 
+class win(QMainWindow):
+    def __init__(self):
+        super(win, self).__init__()
+        uic.loadUi("editor.ui", self)
+        self.show()
 
-def open_doc():
-    global code
-    path = askopenfilename(filetypes=[('Text Documents', '*.txt'), ('PDF', '*.pdf'), ('All Files', '*.*')])
-    try:
-        root.title('AudioPlus - ' + os.path.basename(path))
-        with open(path, 'r') as file:
-            code = file.read()
-    except EXCEPTION:
-        sapiva.speak('File Could Not be Read')
-    finally:
-        path.close()
+        self.actionOpen.clicked.connect(self.open_doc)
+        self.actionRead.clicked.connect(self.read_doc)
+    
+    def open_doc(self):
+        op = QFileDialog.Options()
+        file, _ = QFileDialog.getOpenFileName(self, 
+        "Open", "C:\\", 
+        "Text Documents (*.txt);;PDF (*.pdf);;All Files (*)", options=op)
+        if file != "":
+            with open(file, "r") as f:
+                self.setWindowTitle(f"{os.path.basename(file)} - AudioPlus")
 
+                f_e = os.path.splitext(file)
 
-def read_doc():
-    sapiva.set_rate(125)
-    sapiva.set_volume(1.0)
-    sapiva.speak(code)
+                global path
+                if f_e[1] == ".pdf":
+                    reader = PyPDF2.PdfFileReader(file)
+                    obj = reader.getPage(0)
+                    global path
+                    global content
+                    path = f.name
+                    content = obj.extractText()
+                    self.actionRead.setEnabled(True)
+                else:
+                    path = f.read()
+                    self.actionRead.setEnabled(True)
+    
+    def read_doc(self):
+        if path != "":
+            f_e = os.path.splitext(path)
+            if f_e[1] == ".pdf":
+                reader = PyPDF2.PdfFileReader(path)
+                for page in range(reader.numPages):
+                    obj = reader.getPage(page)
+                    sapiva.set_rate(125)
+                    sapiva.set_volume(1.0)
+                    sapiva.speak(obj.extractText())
+            else:
+                sapiva.set_rate(125)
+                sapiva.set_volume(1.0)
+                sapiva.speak(path)
+    
+def main():
+    app = QApplication([])
+    window = win()
+    app.exec_()
 
-
-l_1 = Label(text='AudioPlus', font=('Arial', 12))
-l_1.grid(row=0, column=0, padx=10, pady=10)
-
-open_button = Button(text='Open', command=open_doc)
-open_button.grid(row=1, column=1, pady=10, padx=0)
-
-open_button = Button(text='Read', command=read_doc)
-open_button.grid(row=1, column=2, pady=10, padx=50)
-
-root.mainloop()
+if __name__ == "__main__":
+    main()
