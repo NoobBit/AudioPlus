@@ -39,8 +39,13 @@ class win(QMainWindow):
                     path = f.name
                     content = obj.extractText()
                     self.actionRead.setEnabled(True)
+
+                    for page in range(reader.numPages):
+                        bobj = reader.getPage(page)
+                        self.readBox.setPlainText(bobj.extractText())
                 else:
                     path = f.read()
+                    self.readBox.setPlainText(path)
                     self.actionRead.setEnabled(True)
     
     def read_doc(self):

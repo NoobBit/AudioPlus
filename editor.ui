@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>210</height>
+    <height>500</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,7 +21,7 @@
     <property name="geometry">
      <rect>
       <x>220</x>
-      <y>130</y>
+      <y>80</y>
       <width>161</width>
       <height>23</height>
      </rect>
@@ -34,7 +34,7 @@
     <property name="geometry">
      <rect>
       <x>19</x>
-      <y>130</y>
+      <y>80</y>
       <width>161</width>
       <height>23</height>
      </rect>
@@ -47,7 +47,7 @@
     <property name="geometry">
      <rect>
       <x>140</x>
-      <y>30</y>
+      <y>20</y>
       <width>131</width>
       <height>51</height>
      </rect>
@@ -62,6 +62,16 @@
     </property>
     <property name="text">
      <string>AudioPlus</string>
+    </property>
+   </widget>
+   <widget class="QPlainTextEdit" name="readBox">
+    <property name="geometry">
+     <rect>
+      <x>19</x>
+      <y>130</y>
+      <width>361</width>
+      <height>341</height>
+     </rect>
     </property>
    </widget>
   </widget>
